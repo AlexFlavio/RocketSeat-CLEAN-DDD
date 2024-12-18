@@ -1,12 +1,8 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id"
-import { QuestionsRepository } from "../repositories/questions-repository"
-import { Question } from "../../enterprise/entities/question"
-import {
-  QuestionComment,
-  QuestionCommentProps,
-} from "../../enterprise/entities/question-comment"
-import { QuestionCommentsRepository } from "../repositories/question-comments-repository"
 import { Either, left, right } from "@/core/either"
+import { UniqueEntityID } from "@/core/entities/unique-entity-id"
+import { QuestionComment } from "../../enterprise/entities/question-comment"
+import { QuestionCommentsRepository } from "../repositories/question-comments-repository"
+import { QuestionsRepository } from "../repositories/questions-repository"
 import { ResourceNotFoundError } from "./errors/resource-not-found-error"
 
 interface CommentOnQuestionUseCaseRequest {
@@ -31,7 +27,7 @@ export class CommentOnQuestionUseCase {
   async execute({
     authorId,
     questionId,
-    content,
+    content
   }: CommentOnQuestionUseCaseRequest): Promise<CommentOnQuestionUseCaseResponse> {
     const question = await this.questionsRepository.findById(questionId)
 
@@ -42,13 +38,13 @@ export class CommentOnQuestionUseCase {
     const questionComment = QuestionComment.create({
       authorId: new UniqueEntityID(authorId),
       questionId: new UniqueEntityID(questionId),
-      content,
+      content
     })
 
     await this.questionCommentsRepository.create(questionComment)
 
     return right({
-      questionComment,
+      questionComment
     })
   }
 }

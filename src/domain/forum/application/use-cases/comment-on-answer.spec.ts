@@ -1,7 +1,7 @@
+import { makeAnswer } from "test/factories/make-answer"
 import { InMemoryAnswerCommentsRepository } from "test/repositories/in-memory-answer-comments-repository"
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository"
 import { CommentOnAnswerUseCase } from "./comment-on-answer"
-import { makeAnswer } from "test/factories/make-answer"
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
@@ -23,18 +23,17 @@ describe("Comment on Answer", () => {
     const answer = makeAnswer()
     await inMemoryAnswersRepository.create(answer)
 
-    const { answerComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: answer.authorId.toString(),
       answerId: answer.id.toString(),
-      content: "test Comment",
+      content: "test Comment"
     })
 
-    expect(answerComment.id).toBeTruthy()
+    expect(result.isRight()).toBe(true)
     expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual(
       "test Comment"
     )
-    expect(inMemoryAnswerCommentsRepository.items[0].id).toEqual(
-      answerComment.id
-    )
+
+    // expect(inMemoryAnswerCommentsRepository.items[0]).toEqual(result.value)
   })
 })

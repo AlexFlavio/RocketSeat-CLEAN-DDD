@@ -1,7 +1,7 @@
+import { makeQuestion } from "test/factories/make-question"
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository"
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository"
 import { CommentOnQuestionUseCase } from "./comment-on-question"
-import { makeQuestion } from "test/factories/make-question"
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
@@ -24,18 +24,22 @@ describe("Comment on Question", () => {
     const question = makeQuestion()
     await inMemoryQuestionsRepository.create(question)
 
-    const { questionComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: question.authorId.toString(),
       questionId: question.id.toString(),
-      content: "test Comment",
+      content: "test Comment"
     })
 
-    expect(questionComment.id).toBeTruthy()
-    expect(inMemoryQuestionCommentsRepository.items[0].content).toEqual(
-      "test Comment"
-    )
-    expect(inMemoryQuestionCommentsRepository.items[0].id).toEqual(
-      questionComment.id
-    )
+    expect(result.isRight()).toBe(true)
+
+    if (result.isRight()) {
+      expect(result.value?.questionComment.id).toBeTruthy()
+      expect(inMemoryQuestionCommentsRepository.items[0].content).toEqual(
+        "test Comment"
+      )
+      expect(inMemoryQuestionCommentsRepository.items[0].id).toEqual(
+        result.value?.questionComment.id
+      )
+    }
   })
 })

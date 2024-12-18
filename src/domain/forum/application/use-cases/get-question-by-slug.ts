@@ -1,6 +1,6 @@
-import { QuestionsRepository } from "../repositories/questions-repository"
-import { Question } from "../../enterprise/entities/question"
 import { Either, left, right } from "@/core/either"
+import { Question } from "../../enterprise/entities/question"
+import { QuestionsRepository } from "../repositories/questions-repository"
 import { ResourceNotFoundError } from "./errors/resource-not-found-error"
 
 interface GetQuestionBySlugUseCaseRequest {
@@ -18,7 +18,7 @@ export class GetQuestionBySlugUseCase {
   constructor(private questionsRepository: QuestionsRepository) {}
 
   async execute({
-    slug,
+    slug
   }: GetQuestionBySlugUseCaseRequest): Promise<GetQuestionBySlugUseCaseResponse> {
     const question = await this.questionsRepository.findBySlug(slug)
 
@@ -27,7 +27,7 @@ export class GetQuestionBySlugUseCase {
     }
 
     return right({
-      question,
+      question
     })
   }
 }

@@ -1,9 +1,9 @@
+import { Either, left, right } from "@/core/either"
 import { UniqueEntityID } from "@/core/entities/unique-entity-id"
 import { AnswerComment } from "../../enterprise/entities/answer-comment"
 import { AnswerCommentsRepository } from "../repositories/answer-comments-repository"
 import { AnswersRepository } from "../repositories/answers-repository"
 import { ResourceNotFoundError } from "./errors/resource-not-found-error"
-import { Either, left, right } from "@/core/either"
 
 interface CommentOnAnswerUseCaseRequest {
   authorId: string
@@ -27,7 +27,7 @@ export class CommentOnAnswerUseCase {
   async execute({
     authorId,
     answerId,
-    content,
+    content
   }: CommentOnAnswerUseCaseRequest): Promise<CommentOnAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
@@ -38,13 +38,15 @@ export class CommentOnAnswerUseCase {
     const answerComment = AnswerComment.create({
       authorId: new UniqueEntityID(authorId),
       answerId: new UniqueEntityID(answerId),
-      content,
+      content
     })
 
     await this.answerCommentsRepository.create(answerComment)
 
     return right({
-      answerComment,
+      answerComment: answerComment
     })
   }
 }
+
+export default CommentOnAnswerUseCaseResponse
