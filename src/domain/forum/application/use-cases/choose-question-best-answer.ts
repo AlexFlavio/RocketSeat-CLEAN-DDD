@@ -1,7 +1,7 @@
-import { AnswersRepository } from "../repositories/answers-repository"
-import { Question } from "../../enterprise/entities/question"
-import { QuestionsRepository } from "../repositories/questions-repository"
 import { Either, left, right } from "@/core/either"
+import { Question } from "../../enterprise/entities/question"
+import { AnswersRepository } from "../repositories/answers-repository"
+import { QuestionsRepository } from "../repositories/questions-repository"
 import { NotAllowedError } from "./errors/not-allowed-error"
 import { ResourceNotFoundError } from "./errors/resource-not-found-error"
 
@@ -25,7 +25,7 @@ export class ChooseQuestionBestAnswerUseCase {
 
   async execute({
     answerId,
-    authorId,
+    authorId
   }: ChooseQuestionBestAnswerUseCaseRequest): Promise<ChooseQuestionBestAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
@@ -48,7 +48,7 @@ export class ChooseQuestionBestAnswerUseCase {
     await this.questionsRepository.save(question)
 
     return right({
-      question,
+      question
     })
   }
 }
